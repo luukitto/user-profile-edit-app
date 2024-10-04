@@ -25,7 +25,8 @@ export class UserProfileService {
       firstName: 'John',
       lastName: 'Doe',
       email: 'john.doe@example.com',
-      phoneNumber: '1234567890'
+      phoneNumber: '1234567890',
+      profilePicture: null
     };
   }
 

@@ -3,6 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import {UserProfileService} from "../../services/user-profile.service";
+import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
+import {MatCardModule} from "@angular/material/card";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatIconModule} from "@angular/material/icon";
+import {MatFormFieldModule} from "@angular/material/form-field";
 
 interface UserProfileData {
   firstName: string;
@@ -18,7 +25,16 @@ interface UserProfileData {
   templateUrl: './user-profile-edit.component.html',
   styleUrls: ['./user-profile-edit.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatIconModule,
+    MatFormFieldModule]
 })
 export class UserProfileEditComponent implements OnInit {
   profileForm!: FormGroup;
@@ -41,6 +57,10 @@ export class UserProfileEditComponent implements OnInit {
     this.userProfileService.getUserProfile().subscribe(data => {
       console.log('Pre-populating form with:', data); // Debug log
       this.profileForm.patchValue(data);
+
+      if (data.profilePicture) {
+        this.profilePreviewUrl = data.profilePicture;
+      }
     });
   }
 
@@ -86,16 +106,17 @@ export class UserProfileEditComponent implements OnInit {
   onFileChange(event: any) {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      this.profileForm.patchValue({ profilePicture: file });
 
-      // Generate a preview URL for the image
+      // Convert the file to a Base64 string
       const reader = new FileReader();
       reader.onload = () => {
-        this.profilePreviewUrl = reader.result; // Set preview URL
+        this.profilePreviewUrl = reader.result; // Set preview URL as Base64 string
+        this.profileForm.patchValue({ profilePicture: this.profilePreviewUrl });
       };
       reader.readAsDataURL(file);
     }
   }
+
 
 
   onCancel() {

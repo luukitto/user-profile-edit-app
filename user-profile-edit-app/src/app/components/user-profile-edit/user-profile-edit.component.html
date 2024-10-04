@@ -1,50 +1,59 @@
-<div class="profile-edit-container">
-  <div *ngIf="loading" class="loading-spinner">Loading...</div>
+<mat-card class="profile-card">
   <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="firstName">First Name:</label>
-      <input id="firstName" formControlName="firstName" type="text" />
-      <div *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched">
-        First Name is required
-      </div>
-    </div>
 
-    <div class="form-group">
-      <label for="lastName">Last Name:</label>
-      <input id="lastName" formControlName="lastName" type="text" />
-      <div *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched">
-        Last Name is required
-      </div>
-    </div>
+    <!-- First Name -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="firstName" placeholder="Enter your first name">
+      <mat-error *ngIf="profileForm.get('firstName')?.hasError('required')">
+        First name is required
+      </mat-error>
+    </mat-form-field>
 
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input id="email" formControlName="email" type="email" />
-      <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
-        A valid Email is required
-      </div>
-    </div>
+    <!-- Last Name -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Last Name</mat-label>
+      <input matInput formControlName="lastName" placeholder="Enter your last name">
+      <mat-error *ngIf="profileForm.get('lastName')?.hasError('required')">
+        Last name is required
+      </mat-error>
+    </mat-form-field>
 
-    <div class="form-group">
-      <label for="phoneNumber">Phone Number:</label>
-      <input id="phoneNumber" formControlName="phoneNumber" type="text" />
-      <div *ngIf="profileForm.get('phoneNumber')?.invalid && profileForm.get('phoneNumber')?.touched">
-        Phone Number should contain only numbers
-      </div>
-    </div>
+    <!-- Email -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" placeholder="Enter your email">
+      <mat-error *ngIf="profileForm.get('email')?.hasError('required')">
+        Email is required
+      </mat-error>
+      <mat-error *ngIf="profileForm.get('email')?.hasError('email')">
+        Please enter a valid email
+      </mat-error>
+    </mat-form-field>
 
+    <!-- Phone Number -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Phone Number</mat-label>
+      <input matInput formControlName="phoneNumber" placeholder="Enter your phone number">
+      <mat-error *ngIf="profileForm.get('phoneNumber')?.hasError('pattern')">
+        Phone number should contain only numbers
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Profile Picture -->
     <div class="form-group">
       <label for="profilePicture">Profile Picture:</label>
-      <input id="profilePicture" type="file" (change)="onFileChange($event)" />
-
+      <input id="profilePicture" type="file" (change)="onFileChange($event)">
       <div *ngIf="profilePreviewUrl">
-        <img [src]="profilePreviewUrl" alt="Profile Picture Preview" width="100" height="100" />
+        <img [src]="profilePreviewUrl" alt="Profile Picture Preview" width="100" height="100">
       </div>
     </div>
 
-
-
-    <button type="submit" [disabled]="profileForm.invalid">Save</button>
-    <button type="button" (click)="onCancel()">Cancel</button>
+    <!-- Buttons -->
+    <div class="button-group">
+      <button mat-raised-button color="primary" type="submit" [disabled]="loading || profileForm.invalid">Save</button>
+      <button mat-button color="warn" type="button" (click)="onCancel()">Cancel</button>
+      <mat-spinner *ngIf="loading" diameter="30"></mat-spinner>
+    </div>
   </form>
-</div>
+</mat-card>

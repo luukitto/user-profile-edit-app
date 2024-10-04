@@ -2,6 +2,7 @@ import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { UserProfileEditComponent } from './user-profile-edit.component';
 import { of } from 'rxjs';
 import {UserProfileService} from "../../services/user-profile.service";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 describe('UserProfileEditComponent', () => {
   let component: UserProfileEditComponent;
@@ -9,13 +10,13 @@ describe('UserProfileEditComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [UserProfileEditComponent], // Import the standalone component here
+      imports: [UserProfileEditComponent, BrowserAnimationsModule],
       providers: [
         {
           provide: UserProfileService,
           useValue: {
-            getUserProfile: () => of({}), // Mock getUserProfile
-            updateUserProfile: () => of({ success: true }) // Mock updateUserProfile
+            getUserProfile: () => of({}),
+            updateUserProfile: () => of({ success: true })
           }
         }
       ]
